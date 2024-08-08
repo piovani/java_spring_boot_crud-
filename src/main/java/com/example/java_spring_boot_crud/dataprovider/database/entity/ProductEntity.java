@@ -1,4 +1,4 @@
-package com.example.java_spring_boot_crud.models;
+package com.example.java_spring_boot_crud.dataprovider.database.entity;
 
 import jakarta.persistence.*;
 
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "TB_PRODUCTS")
-public class ProductModel implements Serializable {
+public class ProductEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

@@ -1,8 +1,8 @@
-package com.example.java_spring_boot_crud.controllers;
+package com.example.java_spring_boot_crud.entrypoint.api.controllers;
 
-import com.example.java_spring_boot_crud.dtos.ProductRecordDto;
-import com.example.java_spring_boot_crud.models.ProductModel;
-import com.example.java_spring_boot_crud.repositores.ProductRepository;
+import com.example.java_spring_boot_crud.core.common.dto.ProductRecordDto;
+import com.example.java_spring_boot_crud.dataprovider.database.entity.ProductEntity;
+import com.example.java_spring_boot_crud.dataprovider.database.repositores.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,21 +21,21 @@ public class ProductController {
     ProductRepository productRepository;
 
     @GetMapping
-    public ResponseEntity<List<ProductModel>> getAllProducts() {
-        List<ProductModel> products = productRepository.findAll();
+    public ResponseEntity<List<ProductEntity>> getAllProducts() {
+        List<ProductEntity> products = productRepository.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(products);
     }
 
     @PostMapping
-    public ResponseEntity<ProductModel> saveProduct(@RequestBody @Valid ProductRecordDto productRecordDto) {
-        var productModel = new ProductModel();
+    public ResponseEntity<ProductEntity> saveProduct(@RequestBody @Valid ProductRecordDto productRecordDto) {
+        var productModel = new ProductEntity();
         BeanUtils.copyProperties(productRecordDto, productModel);
         return ResponseEntity.status(HttpStatus.CREATED).body(productRepository.save(productModel));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOneProduct(@PathVariable(value="id") UUID id) {
-        Optional<ProductModel> product0 = productRepository.findById(id);
+        Optional<ProductEntity> product0 = productRepository.findById(id);
         if(product0.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
         }
@@ -45,7 +45,7 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable(value="id") UUID id,
                                                 @RequestBody @Valid ProductRecordDto productRecordDto) {
-        Optional<ProductModel> product0 = productRepository.findById(id);
+        Optional<ProductEntity> product0 = productRepository.findById(id);
         if (product0.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
         }
@@ -56,7 +56,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable(value="id") UUID id) {
-        Optional<ProductModel> product0 = productRepository.findById(id);
+        Optional<ProductEntity> product0 = productRepository.findById(id);
         if (product0.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
         }
