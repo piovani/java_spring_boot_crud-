@@ -1,8 +1,9 @@
-package com.example.java_spring_boot_crud.entrypoint.api.controllers;
+package com.example.java_spring_boot_crud.entrypoint.api.controller;
 
 import com.example.java_spring_boot_crud.core.common.dto.ProductRecordDto;
 import com.example.java_spring_boot_crud.dataprovider.database.entity.ProductEntity;
 import com.example.java_spring_boot_crud.dataprovider.database.repositores.ProductRepository;
+import com.example.java_spring_boot_crud.entrypoint.api.expection.CreateProductExepection;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,14 @@ public class ProductController {
     public ResponseEntity<ProductEntity> saveProduct(@RequestBody @Valid ProductRecordDto productRecordDto) {
         var product = new ProductEntity();
         BeanUtils.copyProperties(productRecordDto, product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(productRepository.save(product));
+
+        var newProduct = productRepository.save(product);
+
+        if (true) {
+            throw new CreateProductExepection();
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
 
     @GetMapping("/{id}")
